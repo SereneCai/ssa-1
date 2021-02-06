@@ -1,0 +1,83 @@
+<!--This is a page to display products from the server.-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../src/main/resources/static/assets/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <title>Product Display</title>
+</head>
+<body>
+
+<div class="container">
+    <h1>Product Display</h1><br>
+    <div class="row">
+        <div id="productDisplay" class="card-group testcarts">
+        </div>
+    </div>
+</div>
+
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-analytics.js"></script>
+
+<script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+        apiKey: "AIzaSyDJr2d0IH3O8B7Ft0akImn1SdzqHSE3U3Y",
+        authDomain: "ssa-furniture.firebaseapp.com",
+        projectId: "ssa-furniture",
+        storageBucket: "ssa-furniture.appspot.com",
+        messagingSenderId: "1050348463474",
+        appId: "1:1050348463474:web:5acff70441166b238129eb",
+        measurementId: "G-DRJ3RC2EKG"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    const db = firebase.firestore();
+</script>
+<script>
+
+    const productDisplay = document.querySelector('#productDisplay');
+
+
+    function renderCards(furniture, id) {
+        let html = `<div data-id="${id}" class="col-sm-3"><div class="card p-1">
+        <img class="card-img-top animate__animated animate__fadeIn" src="${furniture.data().image}" alt="">
+        <div class="card-body">
+            <h5 class="card-title">${furniture.data().name}</h5>
+            <p class="card-text">$${furniture.data().price}</p>
+            <button id="addToCart" type="button" class="btn btn-warning">Add to cart</button>
+        </div>
+    </div></div>`;
+
+        productDisplay.innerHTML += html;
+    }
+
+    db.collection('furniture').get().then(snapshot => {
+        snapshot.docs.forEach(doc => {
+            renderCards(doc);
+        })
+    })
+
+</script>
+<script src="../src/main/resources/static/assets/furniture.js"></script>
+</body>
+</html>
