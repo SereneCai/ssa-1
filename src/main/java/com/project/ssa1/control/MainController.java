@@ -16,7 +16,7 @@ public class MainController {
     private UserTable userTable;
 
     @RequestMapping(path="/add", method={RequestMethod.POST, RequestMethod.GET}) // Map ONLY POST Requests
-    public String addNewUser (@RequestParam String name, @RequestParam String email, @RequestParam String password,
+   public  @ResponseBody String addNewUser (@RequestParam String name, @RequestParam String email, @RequestParam String password,
                                             @RequestParam Integer phone, @RequestParam String address){
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
@@ -27,7 +27,7 @@ public class MainController {
         First.setPassword(password);
         First.setPhone(phone);
         userTable.save(First);
-        return "redirect:/form";
+        return "successful";
     }
 
     @GetMapping(path="/all")
